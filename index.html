@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rohini Muppala | Web Developer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #2563eb;
+            --secondary: #1d4ed8;
+            --dark: #0b1220;
+            --card: #111827;
+            --text-light: #9ca3af;
+            --border: #1f2937;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: radial-gradient(circle at 20% 20%, rgba(37,99,235,0.08), transparent 40%),
+                        radial-gradient(circle at 80% 80%, rgba(37,99,235,0.05), transparent 40%),
+                        var(--dark);
+            color: #ffffff;
+        }
+
+        header {
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            background: rgba(11, 18, 32, 0.75);
+            backdrop-filter: blur(18px);
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            padding: 20px 8%;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            transition: background 0.4s ease, box-shadow 0.4s ease;
+        }
+
+        header.scrolled {
+            background: #0f172a;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+        }
+
+        nav { display: flex; }
+
+        nav a {
+            color: var(--text-light);
+            margin-left: 30px;
+            text-decoration: none;
+            font-size: 14px;
+            position: relative;
+            transition: all 0.3s ease;
+            padding: 6px 4px;
+        }
+
+        nav a::after {
+            content: "";
+            position: absolute;
+            width: 0%;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background: var(--primary);
+            transition: width 0.3s ease;
+        }
+
+        nav a:hover,
+        nav a.active { color: #ffffff; }
+
+        nav a:hover::after,
+        nav a.active::after { width: 100%; }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 5px;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: #ffffff;
+            border-radius: 2px;
+            transition: 0.3s ease;
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+        .hamburger.active span:nth-child(2) { opacity: 0; }
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(6px, -6px);
+        }
+
+        section {
+            padding: 120px 8% 80px;
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .hero {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            min-height: 100vh;
+        }
+
+        .hero-name {
+            position: relative;
+            display: inline-block;
+            font-size: 42px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            margin-bottom: 18px;
+            padding-left: 20px;
+            background: linear-gradient(90deg, #ffffff, #60a5fa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Glowing Accent Line (Left) */
+        .hero-name::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 10%;
+            height: 80%;
+            width: 4px;
+            border-radius: 4px;
+            background: linear-gradient(to bottom, var(--primary), #60a5fa);
+            box-shadow: 0 0 12px rgba(37,99,235,0.7);
+        }
+
+        /* Animated Underline */
+        .hero-name::after {
+            content: "";
+            position: absolute;
+            left: 20px;
+            bottom: -6px;
+            width: 0%;
+            height: 3px;
+            border-radius: 3px;
+            background: linear-gradient(90deg, var(--primary), #60a5fa);
+            box-shadow: 0 0 10px rgba(37,99,235,0.6);
+            animation: underlineExpand 1.2s ease forwards 0.5s;
+        }
+
+        @keyframes underlineExpand {
+            from { width: 0%; }
+            to { width: 80%; }
+        }
+
+        .hero-text h2 {
+            font-size: 52px;
+            font-weight: 800;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, #ffffff, #93c5fd);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: fadeInDown 1s ease forwards;
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hero-text p {
+            font-size: 18px;
+            color: var(--text-light);
+            margin-bottom: 30px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 28px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-right: 15px;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: #ffffff;
+            border: 1px solid var(--secondary);
+        }
+        .btn-primary:hover {
+            background: var(--secondary);
+            transform: translateY(-3px);
+        }
+
+        .btn-outline {
+            border: 1px solid var(--primary);
+            color: var(--primary);
+        }
+        .btn-outline:hover {
+            background: var(--primary);
+            color: #ffffff;
+            transform: translateY(-3px);
+        }
+
+        .hero-img { flex: 1; display: flex; justify-content: flex-end; }
+
+        .hero-img {
+            flex: 1;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        /* Circular Frame Wrapper */
+        .profile-frame {
+            padding: 6px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), #60a5fa);
+            box-shadow: 0 0 25px rgba(37,99,235,0.4);
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+        }
+
+        .profile-frame:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 0 40px rgba(37,99,235,0.6);
+        }
+
+        .hero-img img {
+            width: 220px;
+            height: 220px;
+            object-fit: cover;
+            border-radius: 50%;
+            display: block;
+            border: 4px solid #0b1220;
+        }
+
+        h3.section-title {
+            font-size: 32px;
+            margin-bottom: 40px;
+            text-align: center;
+            position: relative;
+        }
+
+        h3.section-title::after {
+            content: "";
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), #60a5fa);
+            display: block;
+            margin: 12px auto 0;
+            border-radius: 3px;
+        }
+
+        .projects {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .card {
+            background: rgba(255,255,255,0.03);
+            backdrop-filter: blur(12px);
+            border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.08);
+            padding: 0;
+            overflow: hidden;
+            transition: transform 0.4s ease, box-shadow 0.4s ease, border 0.4s ease;
+        }
+
+        .card-content {
+            padding: 20px 25px 25px;
+        }
+
+        .project-img {
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+            display: block;
+            margin: 0 auto;
+            transition: none; /* Remove zoom restriction */
+            border-radius: 8px;
+        }
+
+        /* Hover Zoom Effect */
+        /* Removed zoom effect for full image visibility */
+
+        .card:hover {
+            transform: translateY(-12px);
+            border-color: rgba(37,99,235,0.6);
+            box-shadow: 0 20px 50px rgba(37,99,235,0.15);
+        }
+
+        /* Achievement Images */
+        .achievement-img {
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+            display: block;
+            margin: 0 auto;
+            transition: none; /* Show full certificate clearly */
+            border-radius: 8px;
+        }
+
+        /* Removed zoom effect for full image visibility */
+
+        .achievement-content {
+            padding: 20px 25px 25px;
+        }
+
+        /* Highlight Achievement Headings */
+        #achievements h4 {
+            font-size: 18px;
+            font-weight: 700;
+            background: linear-gradient(90deg, #ffffff, #60a5fa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        /* Highlight Project Headings */
+        #projects h4 {
+            font-size: 18px;
+            font-weight: 700;
+            background: linear-gradient(90deg, #ffffff, #93c5fd);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        /* Highlight Activity Headings */
+        #activities h4 {
+            font-size: 18px;
+            font-weight: 700;
+            background: linear-gradient(90deg, #ffffff, #60a5fa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 12px;
+        }
+
+        /* Highlight Certification Headings */
+        #certifications h4 {
+            font-size: 18px;
+            font-weight: 700;
+            background: linear-gradient(90deg, #ffffff, #60a5fa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .achievement-tag {
+            display: inline-block;
+            margin-top: 12px;
+            padding: 6px 14px;
+            font-size: 12px;
+            border-radius: 20px;
+            background: rgba(37,99,235,0.15);
+            color: #60a5fa;
+            border: 1px solid rgba(37,99,235,0.4);
+        }
+
+        /* Activities Modern Glass Card */
+        .activities-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 35px;
+        }
+
+        .activity-card {
+            position: relative;
+            padding: 35px 30px;
+            background: rgba(255,255,255,0.04);
+            border-radius: 25px;
+            border: 1px solid rgba(255,255,255,0.08);
+            backdrop-filter: blur(15px);
+            transition: all 0.4s ease;
+            overflow: hidden;
+        }
+
+        /* Subtle glowing border effect */
+        .activity-card::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: 25px;
+            padding: 1px;
+            background: linear-gradient(135deg, var(--primary), #60a5fa);
+            -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .activity-card:hover::before {
+            opacity: 1;
+        }
+
+        .activity-card:hover {
+            transform: translateY(-12px);
+            box-shadow: 0 25px 60px rgba(37,99,235,0.25);
+        }
+
+        .activity-card h4 {
+            margin-bottom: 12px;
+            font-size: 18px;
+        }
+
+        .activity-card p {
+            color: var(--text-light);
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        /* Certifications Premium Style */
+        .certifications-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .cert-card {
+            position: relative;
+            padding: 30px 25px;
+            background: rgba(255,255,255,0.04);
+            border-radius: 25px;
+            border: 1px solid rgba(255,255,255,0.08);
+            backdrop-filter: blur(12px);
+            transition: all 0.4s ease;
+            overflow: hidden;
+        }
+
+        .cert-card::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: 25px;
+            padding: 1px;
+            background: linear-gradient(135deg, var(--primary), #60a5fa);
+            -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .cert-card:hover::before {
+            opacity: 1;
+        }
+
+        .cert-card:hover {
+            transform: translateY(-12px);
+            box-shadow: 0 25px 60px rgba(37,99,235,0.2);
+        }
+
+        .cert-badge {
+            font-size: 28px;
+            margin-bottom: 15px;
+        }
+
+        .cert-card h4 {
+            margin-bottom: 10px;
+        }
+
+        .cert-card p {
+            color: var(--text-light);
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .cert-year {
+            font-size: 12px;
+            color: var(--primary);
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+                .skills-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        /* Modern Premium Skill Cards */
+        .skill {
+            position: relative;
+            padding: 22px 20px 22px 28px;
+            background: rgba(255,255,255,0.04);
+            border-radius: 18px;
+            border: 1px solid rgba(255,255,255,0.08);
+            backdrop-filter: blur(12px);
+            font-weight: 600;
+            letter-spacing: 1px;
+            transition: all 0.35s ease;
+            overflow: hidden;
+        }
+
+        /* Left Accent Line */
+        .skill::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 4px;
+            background: linear-gradient(to bottom, var(--primary), #60a5fa);
+            border-radius: 18px 0 0 18px;
+            box-shadow: 0 0 12px rgba(37,99,235,0.6);
+        }
+
+        .skill:hover {
+            transform: translateY(-6px);
+            border-color: rgba(37,99,235,0.6);
+            box-shadow: 0 15px 35px rgba(37,99,235,0.25);
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            background: #0f172a;
+            font-size: 14px;
+            color: var(--text-light);
+            border-top: 1px solid var(--border);
+        }
+
+        #scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            width: 0%;
+            background: linear-gradient(90deg, var(--primary), #60a5fa);
+            z-index: 2000;
+            transition: width 0.2s ease-out;
+        }
+
+        @media (max-width: 768px) {
+            .hero-text h2 { font-size: 36px; }
+
+            nav {
+                position: fixed;
+                top: 70px;
+                right: -100%;
+                width: 220px;
+                height: calc(100vh - 70px);
+                background: #0f172a;
+                flex-direction: column;
+                padding: 30px;
+                transition: right 0.4s ease;
+                border-left: 1px solid var(--border);
+            }
+
+            nav.active { right: 0; }
+
+            nav a { margin: 15px 0; }
+            .hamburger { display: flex; }
+        }
+    </style>
+</head>
+<body>
+
+<div id="scroll-progress"></div>
+
+<header id="header">
+    <nav id="nav-menu">
+        <a href="#about">About</a>
+        <a href="#projects">Projects</a>
+        <a href="#skills">Skills</a>
+        <a href="#activities">Activities</a>
+        <a href="#certifications">Certifications</a>
+        <a href="#achievements">Achievements</a>
+        <a href="#contact">Contact</a>
+    </nav>
+    <div class="hamburger" id="hamburger">
+        <span></span><span></span><span></span>
+    </div>
+</header>
+
+<section class="hero reveal">
+    <div class="hero-text">
+        <div class="hero-name">Rohini Muppala</div>
+        <h2>Creative Web Developer</h2>
+        <p>I design and build modern, high-performance websites.</p>
+        <a href="#projects" class="btn btn-primary">View Projects</a>
+        <a href="resume.pdf" target="_blank" class="btn btn-outline">View Resume</a>
+    </div>
+    <div class="hero-img reveal">
+        <div class="profile-frame">
+            <img src="C:\Users\DELL\OneDrive\Documents\RohiniMuppala.jpeg" alt="Rohini Muppala Profile Image">
+        </div>
+    </div>
+</section>
+
+<section id="about" class="reveal">
+    <h3 class="section-title">About Me</h3>
+    <div style="max-width:900px; margin:auto; color: var(--text-light); line-height:1.8; font-size:16px; text-align:center;">
+        <p style="margin-bottom:20px;">
+            I am a passionate and detail-oriented <strong style="color:#ffffff;">Full-Stack Web Developer</strong> with a strong foundation in building scalable, responsive, and user-centric web applications. My focus is on creating clean, efficient code while delivering visually appealing and intuitive user experiences.
+        </p>
+
+        <p style="margin-bottom:20px;">
+            I specialize in modern front-end technologies like <strong style="color:#ffffff;">HTML, CSS, JavaScript, and React</strong>, along with back-end development using <strong style="color:#ffffff;">Node.js and Express</strong>. I enjoy transforming complex problems into simple, elegant solutions that enhance performance and usability.
+        </p>
+
+        <p>
+            Beyond coding, I continuously explore new technologies, contribute to collaborative projects, and strive to improve my skills through hands-on development. My goal is to build impactful digital products that combine innovation, functionality, and design excellence.
+        </p>
+    </div>
+</section>
+
+<section id="projects" class="reveal">
+    <h3 class="section-title">Projects</h3>
+    <div class="projects">
+        
+        <div class="card reveal">
+            <div class="card-content">
+                <h4>Transforming Footsteps into Electricity</h4>
+                <p>
+                    An innovative real-time sustainability project converting mechanical footstep pressure into electrical energy.
+                </p>
+                <button class="btn btn-outline toggle-btn">View Images</button>
+                <div class="extra-content" style="display:none; margin-top:15px;">
+                    <img src="C:\Users\DELL\Downloads\WhatsApp Image 2026-02-25 at 4.14.13 PM.jpeg" class="project-img" alt="Project Image 1">
+                    <img src="C:\Users\DELL\Downloads\WhatsApp Image 2026-02-25 at 4.14.12 PM.jpeg" class="project-img" alt="Project Image 2" style="margin-top:10px;">
+                </div>
+            </div>
+        </div>
+
+        <div class="card reveal">
+            <div class="card-content">
+                <h4>Portfolio Website</h4>
+                <p>Modern responsive personal portfolio website.</p>
+                <button class="btn btn-outline toggle-btn">View Images</button>
+                <div class="extra-content" style="display:none; margin-top:15px;">
+                    <img src="C:\Users\DELL\Downloads\rohini\Mini Project\Screenshot 2026-02-25 161810.png" class="project-img" alt="Portfolio Image 1">
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<section id="skills" class="reveal">
+    <h3 class="section-title">Skills</h3>
+    <div class="skills-list">
+        <a href="#" class="skill reveal" style="text-decoration:none; color:inherit;">HTML</a>
+        <a href="#" class="skill reveal" style="text-decoration:none; color:inherit;">CSS</a>
+        <a href="#" class="skill reveal" style="text-decoration:none; color:inherit;">JavaScript</a>
+    </div>
+</section>
+
+<section id="activities" class="reveal">
+    <h3 class="section-title">Activities</h3>
+    <div class="activities-container">
+        <div class="activity-card reveal">
+            <h4>Graphic Designer</h4>
+            <p>
+                Served as a Graphic Designer for various college technical clubs including <strong style="color:#ffffff;">GANITH</strong>, <strong style="color:#ffffff;">IETE</strong>, and <strong style="color:#ffffff;">IEI</strong>. Designed posters, social media creatives, event banners, and promotional materials for technical fests, workshops, and seminars. Collaborated with organizing teams to create visually impactful designs that enhanced event branding and student engagement.
+            </p>
+        </div>
+        <div class="activity-card reveal">
+            <h4>Hackathons and Competitions</h4>
+            <p>
+                Actively participated in prestigious hackathons including <strong style="color:#ffffff;">Smart India Hackathon (SIH)</strong>, <strong style="color:#ffffff;">UDAI Hackathon</strong>, and a <strong style="color:#ffffff;">Cybersecurity Level-1 Hackathon</strong>. Collaborated in team-based problem solving, developed innovative technical solutions under strict time constraints, and demonstrated strong analytical and development skills. Secured a position in the <strong style="color:#ffffff;">Top 10</strong> in the Cybersecurity Level-1 Hackathon, showcasing technical excellence and competitive performance.
+            </p>
+        </div>
+        <div class="activity-card reveal">
+            <h4>Class Representative</h4>
+            <p>
+                Served as a <strong style="color:#ffffff;">Class Representative</strong> during the academic year <strong style="color:#ffffff;">2025-26</strong>. Acted as a bridge between faculty and students by communicating academic updates, coordinating class activities, addressing student concerns, and ensuring smooth execution of departmental events. Demonstrated leadership, responsibility, and strong communication skills while representing the class in official meetings and academic discussions.
+            </p>
+        </div>
+    </div>
+</section>
+
+<section id="certifications" class="reveal">
+    <h3 class="section-title">Certifications</h3>
+    <div class="certifications-container">
+        <div class="cert-card reveal">
+            <div class="cert-badge">🏆</div>
+            <h4>Responsive Web Design -FreeCode Camp</h4>
+            <p>Certified in modern HTML, CSS, and JavaScript development with responsive design principles.</p>
+            <span class="cert-year">2025</span>
+        </div>
+
+        <div class="cert-card reveal">
+            <div class="cert-badge">💻</div>
+            <h4>Web Development Boot Camp-Udemy</h4>
+            <p>Comprehensive certification covering MERN stack development and REST API integration.</p>
+            <span class="cert-year">2026</span>
+        </div>
+
+        <div class="cert-card reveal">
+            <div class="cert-badge">⚡</div>
+            <h4>JavaScript Essesntials-Cisco</h4>
+            <p>Advanced concepts including ES6+, asynchronous programming, and performance optimization.</p>
+            <span class="cert-year">2025</span>
+        </div>
+    </div>
+</section>
+
+
+
+<section id="achievements" class="reveal">
+    <h3 class="section-title">Achievements</h3>
+    <div class="projects">
+        
+        <div class="card reveal">
+            <div class="achievement-content">
+                <h4>🏆 Reliance Foundation Undergraduate Scholar (2023–2024)</h4>
+                <p>
+                    Awarded the prestigious Reliance Foundation Undergraduate Scholarship in recognition of academic excellence, leadership potential, and commitment to continuous learning and innovation.
+                </p>
+                <button class="btn btn-outline toggle-btn">View Certificate</button>
+                <div class="extra-content" style="display:none; margin-top:15px;">
+                    <img src="C:\Users\DELL\Downloads\WhatsApp Image 2026-02-25 at 3.36.06 PM.jpeg" class="achievement-img" alt="Scholarship Certificate">
+                </div>
+            </div>
+        </div>
+
+        <div class="card reveal">
+            <div class="achievement-content">
+                <h4>🥈 2nd Rank – Real Time Innovation Project</h4>
+                <p>
+                    Secured 2nd Rank for the project "Transforming Footsteps into Electricity," demonstrating innovation in sustainable energy generation and strong teamwork in real-time implementation.
+                </p>
+                <button class="btn btn-outline toggle-btn">View Certificate</button>
+                <div class="extra-content" style="display:none; margin-top:15px;">
+                    <img src="C:\Users\DELL\Downloads\WhatsApp Image 2026-02-25 at 4.11.22 PM.jpeg" class="achievement-img" alt="Project Certificate">
+                </div>
+            </div>
+        </div>
+
+        <div class="card reveal">
+            <div class="achievement-content">
+                <h4>🎯 Top 10 – Cybersecurity Level-1 Hackathon</h4>
+                <p>
+                    Ranked among the Top 10 teams in a competitive cybersecurity hackathon by developing a secure and scalable solution under strict time constraints.
+                </p>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<section id="contact" class="reveal">
+    <h3 class="section-title">Contact</h3>
+    <p style="text-align:center; color: var(--text-light);">rohinimuppala@gmail.com</p>
+</section>
+
+<footer>
+    © <span id="year"></span> Rohini Muppala
+</footer>
+
+<script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    const header = document.getElementById('header');
+    const progressBar = document.getElementById('scroll-progress');
+
+    window.addEventListener('scroll', () => {
+        const scrollTop = document.documentElement.scrollTop;
+        const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        progressBar.style.width = (scrollTop / scrollHeight) * 100 + '%';
+        header.classList.toggle('scrolled', scrollTop > 50);
+    });
+
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('nav a');
+    const hamburger = document.getElementById('hamburger');
+    const navMenu = document.getElementById('nav-menu');
+
+    hamburger.addEventListener('click', () => {
+        hamburger.classList.toggle('active');
+        navMenu.classList.toggle('active');
+    });
+
+    navLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            hamburger.classList.remove('active');
+            navMenu.classList.remove('active');
+        });
+    });
+
+    window.addEventListener('scroll', () => {
+        let current = '';
+        sections.forEach(section => {
+            const sectionTop = section.offsetTop - 150;
+            const sectionHeight = section.offsetHeight;
+            if (window.pageYOffset >= sectionTop && window.pageYOffset < sectionTop + sectionHeight) {
+                current = section.getAttribute('id');
+            }
+        });
+
+        navLinks.forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href') === '#' + current) {
+                link.classList.add('active');
+            }
+        });
+    });
+
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, { threshold: 0.15 });
+
+    reveals.forEach(el => observer.observe(el));
+
+    // Toggle image sections (Projects & Achievements)
+    const toggleButtons = document.querySelectorAll('.toggle-btn');
+    toggleButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const content = btn.nextElementSibling;
+            if (content.style.display === 'none') {
+                content.style.display = 'block';
+                btn.textContent = 'Hide Images';
+            } else {
+                content.style.display = 'none';
+                btn.textContent = 'View Images';
+            }
+        });
+    });
+</script>
+
+</body>
+</html>
